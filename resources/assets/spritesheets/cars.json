@@ -1,0 +1,361 @@
+{
+  "meta": {
+    "image": "cars.png",
+    "format": "RGBA8888",
+    "filter": "Nearest,Nearest",
+    "repeat": "none"
+  },
+    "frames": {
+      "dumptruck": {
+        "frame": {"x": 1, "y": 131, "w": 54, "h": 123},
+        "sourceSize": {"w": 54, "h": 123},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 54, "h": 123}
+      },
+      "tow_truck": {
+        "frame": {"x": 1, "y": 59, "w": 33, "h": 70},
+        "sourceSize": {"w": 33, "h": 70},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 33, "h": 70}
+      },
+      "tow_truck2": {
+        "frame": {"x": 57, "y": 184, "w": 33, "h": 70},
+        "sourceSize": {"w": 33, "h": 70},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 33, "h": 70}
+      },
+      "tow_truck3": {
+        "frame": {"x": 92, "y": 185, "w": 33, "h": 69},
+        "sourceSize": {"w": 33, "h": 69},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 33, "h": 69}
+      },
+      "truck2": {
+        "frame": {"x": 127, "y": 188, "w": 33, "h": 66},
+        "sourceSize": {"w": 33, "h": 66},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 33, "h": 66}
+      },
+      "truck3": {
+        "frame": {"x": 162, "y": 188, "w": 33, "h": 66},
+        "sourceSize": {"w": 33, "h": 66},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 33, "h": 66}
+      },
+      "landcruiser": {
+        "frame": {"x": 1, "y": 1, "w": 29, "h": 56},
+        "sourceSize": {"w": 29, "h": 56},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 29, "h": 56}
+      },
+      "landcruiser2": {
+        "frame": {"x": 197, "y": 198, "w": 29, "h": 56},
+        "sourceSize": {"w": 29, "h": 56},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 29, "h": 56}
+      },
+      "landcruiser3": {
+        "frame": {"x": 228, "y": 198, "w": 29, "h": 56},
+        "sourceSize": {"w": 29, "h": 56},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 29, "h": 56}
+      },
+      "van": {
+        "frame": {"x": 259, "y": 198, "w": 29, "h": 56},
+        "sourceSize": {"w": 29, "h": 56},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 29, "h": 56}
+      },
+      "raptor": {
+        "frame": {"x": 290, "y": 199, "w": 28, "h": 55},
+        "sourceSize": {"w": 28, "h": 55},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 28, "h": 55}
+      },
+      "raptor2": {
+        "frame": {"x": 320, "y": 199, "w": 28, "h": 55},
+        "sourceSize": {"w": 28, "h": 55},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 28, "h": 55}
+      },
+      "pickup": {
+        "frame": {"x": 57, "y": 131, "w": 28, "h": 51},
+        "sourceSize": {"w": 28, "h": 51},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 28, "h": 51}
+      },
+      "pickup2": {
+        "frame": {"x": 36, "y": 78, "w": 28, "h": 51},
+        "sourceSize": {"w": 28, "h": 51},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 28, "h": 51}
+      },
+      "pickup3": {
+        "frame": {"x": 350, "y": 203, "w": 28, "h": 51},
+        "sourceSize": {"w": 28, "h": 51},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 28, "h": 51}
+      },
+      "suv": {
+        "frame": {"x": 380, "y": 204, "w": 28, "h": 50},
+        "sourceSize": {"w": 28, "h": 50},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 28, "h": 50}
+      },
+      "suv2": {
+        "frame": {"x": 410, "y": 204, "w": 28, "h": 50},
+        "sourceSize": {"w": 28, "h": 50},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 28, "h": 50}
+      },
+      "van2": {
+        "frame": {"x": 440, "y": 204, "w": 27, "h": 50},
+        "sourceSize": {"w": 27, "h": 50},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 27, "h": 50}
+      },
+      "van3": {
+        "frame": {"x": 469, "y": 204, "w": 27, "h": 50},
+        "sourceSize": {"w": 27, "h": 50},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 27, "h": 50}
+      },
+      "mustang2": {
+        "frame": {"x": 66, "y": 80, "w": 26, "h": 49},
+        "sourceSize": {"w": 26, "h": 49},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 26, "h": 49}
+      },
+      "camaro": {
+        "frame": {"x": 87, "y": 134, "w": 26, "h": 48},
+        "sourceSize": {"w": 26, "h": 48},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 26, "h": 48}
+      },
+      "camaro2": {
+        "frame": {"x": 94, "y": 84, "w": 26, "h": 48},
+        "sourceSize": {"w": 26, "h": 48},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 26, "h": 48}
+      },
+      "challenger2": {
+        "frame": {"x": 115, "y": 135, "w": 28, "h": 48},
+        "sourceSize": {"w": 28, "h": 48},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 28, "h": 48}
+      },
+      "challenger3": {
+        "frame": {"x": 145, "y": 138, "w": 28, "h": 48},
+        "sourceSize": {"w": 28, "h": 48},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 28, "h": 48}
+      },
+      "lexus": {
+        "frame": {"x": 122, "y": 85, "w": 26, "h": 48},
+        "sourceSize": {"w": 26, "h": 48},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 26, "h": 48}
+      },
+      "lexus2": {
+        "frame": {"x": 175, "y": 138, "w": 26, "h": 48},
+        "sourceSize": {"w": 26, "h": 48},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 26, "h": 48}
+      },
+      "gwagon": {
+        "frame": {"x": 150, "y": 89, "w": 27, "h": 47},
+        "sourceSize": {"w": 27, "h": 47},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 27, "h": 47}
+      },
+      "bmw": {
+        "frame": {"x": 179, "y": 89, "w": 25, "h": 47},
+        "sourceSize": {"w": 25, "h": 47},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 25, "h": 47}
+      },
+      "gwagon2": {
+        "frame": {"x": 203, "y": 149, "w": 27, "h": 47},
+        "sourceSize": {"w": 27, "h": 47},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 27, "h": 47}
+      },
+      "patrol": {
+        "frame": {"x": 232, "y": 149, "w": 27, "h": 47},
+        "sourceSize": {"w": 27, "h": 47},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 27, "h": 47}
+      },
+      "patrol2": {
+        "frame": {"x": 261, "y": 149, "w": 27, "h": 47},
+        "sourceSize": {"w": 27, "h": 47},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 27, "h": 47}
+      },
+      "lexus3": {
+        "frame": {"x": 290, "y": 149, "w": 26, "h": 48},
+        "sourceSize": {"w": 26, "h": 48},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 26, "h": 48}
+      },
+      "taxi": {
+        "frame": {"x": 318, "y": 149, "w": 26, "h": 48},
+        "sourceSize": {"w": 26, "h": 48},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 26, "h": 48}
+      },
+      "taxi2": {
+        "frame": {"x": 206, "y": 99, "w": 26, "h": 48},
+        "sourceSize": {"w": 26, "h": 48},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 26, "h": 48}
+      },
+      "lambo": {
+        "frame": {"x": 234, "y": 101, "w": 27, "h": 46},
+        "sourceSize": {"w": 27, "h": 46},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 27, "h": 46}
+      },
+      "lambo2": {
+        "frame": {"x": 263, "y": 101, "w": 27, "h": 46},
+        "sourceSize": {"w": 27, "h": 46},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 27, "h": 46}
+      },
+      "lancer": {
+        "frame": {"x": 292, "y": 100, "w": 26, "h": 47},
+        "sourceSize": {"w": 26, "h": 47},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 26, "h": 47}
+      },
+      "bmw2": {
+        "frame": {"x": 320, "y": 100, "w": 25, "h": 47},
+        "sourceSize": {"w": 25, "h": 47},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 25, "h": 47}
+      },
+      "bmw3": {
+        "frame": {"x": 32, "y": 10, "w": 25, "h": 47},
+        "sourceSize": {"w": 25, "h": 47},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 25, "h": 47}
+      },
+      "lancer2": {
+        "frame": {"x": 346, "y": 150, "w": 26, "h": 47},
+        "sourceSize": {"w": 26, "h": 47},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 26, "h": 47}
+      },
+      "mustang3": {
+        "frame": {"x": 347, "y": 101, "w": 26, "h": 47},
+        "sourceSize": {"w": 26, "h": 47},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x": 0, "y": 0, "w": 26, "h": 47}
+      },
+      "mini": {
+      "frame": {"x": 427, "y": 112, "w": 24, "h": 42},
+      "sourceSize": {"w": 24, "h": 42},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 24, "h": 42}
+    },
+    "tida2": {
+      "frame": {"x": 453, "y": 111, "w": 24, "h": 43},
+      "sourceSize": {"w": 24, "h": 43},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 24, "h": 43}
+    },
+    "tida3": {
+      "frame": {"x": 479, "y": 159, "w": 24, "h": 43},
+      "sourceSize": {"w": 24, "h": 43},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 24, "h": 43}
+    },
+    "convertible": {
+      "frame": {"x": 479, "y": 116, "w": 24, "h": 41},
+      "sourceSize": {"w": 24, "h": 41},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 24, "h": 41}
+    },
+    "figo": {
+      "frame": {"x": 206, "y": 56, "w": 24, "h": 41},
+      "sourceSize": {"w": 24, "h": 41},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 24, "h": 41}
+    },
+    "figo2": {
+      "frame": {"x": 232, "y": 56, "w": 24, "h": 41},
+      "sourceSize": {"w": 24, "h": 41},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 24, "h": 41}
+    },
+    "porsche": {
+      "frame": {"x": 258, "y": 58, "w": 24, "h": 41},
+      "sourceSize": {"w": 24, "h": 41},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 24, "h": 41}
+    },
+    "bike2": {
+      "frame": {"x": 284, "y": 63, "w": 16, "h": 35},
+      "sourceSize": {"w": 16, "h": 35},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 16, "h": 35}
+    },
+    "bike": {
+      "frame": {"x": 302, "y": 65, "w": 16, "h": 33},
+      "sourceSize": {"w": 16, "h": 33},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 16, "h": 33}
+    }
+  }
+}
+
