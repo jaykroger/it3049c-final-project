@@ -12,6 +12,8 @@ class mainScene extends Phaser.Scene {
       "resources/assets/spritesheets/cars.png",
       "resources/assets/spritesheets/cars.json"
     );
+
+    this.load.audio("music", "resources/assets/audio/mutecity.mp3");
   }
 
   create() {
@@ -80,6 +82,18 @@ class mainScene extends Phaser.Scene {
       "bike2",
       "bike",
     ];
+
+    this.music = this.sound.add("music");
+    const musicConfig = {
+      mute: false,
+      volume: 0.5,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: true,
+      delay: 0,
+    };
+    this.music.play(musicConfig);
   }
 
   update() {

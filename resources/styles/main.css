@@ -1,10 +1,14 @@
 body {
     background-color: #0f0f0f;
+    margin: 0px 0px 50px 0px;
 }
 
 h1 {
     text-align: center;
     color: #f0f0f0;
+    font-family: 'Teko', sans-serif;
+    font-size: 100px;
+    margin: 10px 10px -10px 10px;
 }
 
 html, #game-box {

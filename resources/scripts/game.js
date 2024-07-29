@@ -30,7 +30,7 @@ async function setCoords(position) {
     lat = 34.05772;
     lon = -118.21438;
     console.log(
-      `Unable to get Player Location. Setting position to Los Angeles I5: Latitude: ${lat}, Longitude: ${lon}`
+      `Unable to get Player Location. Setting position to Los Angeles Metro Area I5: Latitude: ${lat}, Longitude: ${lon}`
     );
   }
 
@@ -81,7 +81,7 @@ function setGameDifficulty(trafficData) {
 getPlayerLocation(setCoords);
 
 const gameSettings = {
-  gameSpeed: 8,
+  gameSpeed: 15,
   difficulty: "",
 };
 
