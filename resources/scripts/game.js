@@ -81,8 +81,11 @@ function setGameDifficulty(trafficData) {
 getPlayerLocation(setCoords);
 
 const gameSettings = {
-  gameSpeed: 15,
+  defaultSpeed: 10,
+  maxSpeed: 20,
   difficulty: "",
+  pointsIteration: 1,
+  username: "Jay",
 };
 
 const config = {

@@ -4,16 +4,27 @@ class mainScene extends Phaser.Scene {
   }
 
   preload() {
+    // Load highway background
     this.load.image("highway", "/resources/assets/images/highway.png");
 
-    // Load in Cars Atlas
+    // Load in cars sprite atlas
     this.load.atlas(
       "cars",
       "resources/assets/spritesheets/cars.png",
       "resources/assets/spritesheets/cars.json"
     );
 
+    // Load audio and sound effects
+    this.load.audio("accelerate", "resources/assets/audio/accelerate.mp3");
+    this.load.audio("decelerate", "resources/assets/audio/decelerate.mp3");
     this.load.audio("music", "resources/assets/audio/mutecity.mp3");
+
+    // Load font
+    this.load.bitmapFont(
+      "pixelFont",
+      "resources/assets/font/font.png",
+      "resources/assets/font/font.xml"
+    );
   }
 
   create() {
@@ -29,6 +40,7 @@ class mainScene extends Phaser.Scene {
     this.player = this.physics.add.sprite(487, 850, "cars", "lambo");
     this.player.setScale(2);
     this.player.setCollideWorldBounds(true);
+    this.currentSpeed = gameSettings.defaultSpeed;
     this.cursorKeys = this.input.keyboard.createCursorKeys();
 
     this.carList = [
@@ -83,6 +95,39 @@ class mainScene extends Phaser.Scene {
       "bike",
     ];
 
+    this.gameOver = false;
+
+    // add scoreboard
+    let graphics = this.add.graphics();
+    graphics.fillStyle(0x000000, 1);
+    graphics.beginPath();
+    graphics.moveTo(0, 0);
+    graphics.lineTo(config.width, 0);
+    graphics.lineTo(config.width, 60);
+    graphics.lineTo(0, 60);
+    graphics.lineTo(0, 0);
+    graphics.closePath();
+    graphics.fillPath();
+
+    this.score = 0;
+    let scoreFormated = this.zeroPad(this.score, 6);
+    this.scoreLabel = this.add.bitmapText(
+      20,
+      20,
+      "pixelFont",
+      "SCORE " + scoreFormated,
+      32
+    );
+    this.usernameLabel = this.add.bitmapText(
+      780,
+      20,
+      "pixelFont",
+      gameSettings.username.toLocaleUpperCase(),
+      32
+    );
+
+    this.accelerationSound = this.sound.add("accelerate");
+    this.decelerationSound = this.sound.add("decelerate");
     this.music = this.sound.add("music");
     const musicConfig = {
       mute: false,
@@ -97,8 +142,9 @@ class mainScene extends Phaser.Scene {
   }
 
   update() {
-    this.background.tilePositionY -= gameSettings.gameSpeed;
+    this.background.tilePositionY -= this.currentSpeed;
     this.movePlayerManager();
+    this.updateScore();
   }
 
   movePlayerManager() {
@@ -109,24 +155,67 @@ class mainScene extends Phaser.Scene {
     this.player.setAngle(0);
 
     // Move player left and right and add rotation to simulate steering
-    if (this.cursorKeys.left.isDown) {
+    if (this.cursorKeys.left.isDown && this.player.x > 170) {
       this.player.setAccelerationX(-15000);
       this.player.setAngle(-10);
     }
-    if (this.cursorKeys.right.isDown) {
+    if (this.cursorKeys.right.isDown && this.player.x < 680) {
       this.player.setAccelerationX(15000);
       this.player.setAngle(10);
     }
 
     if (this.cursorKeys.up.isDown) {
       this.player.setAccelerationY(-15000);
+
+      // Acceleration mechanics:
+      // Create illusion of going faster as long as max speed as not been reached
+      if (this.currentSpeed < gameSettings.maxSpeed) {
+        this.currentSpeed += 0.2;
+      }
+      // Acceleration sound will play while up arrow is pressed
+      if (!this.accelerationSound.isPlaying) {
+        this.accelerationSound.play({ loop: true });
+      }
+    } else {
+      if (this.accelerationSound.isPlaying) {
+        this.accelerationSound.stop();
+      }
     }
+
     if (this.cursorKeys.down.isDown) {
       this.player.setAccelerationY(18000);
+
+      if (this.currentSpeed > gameSettings.defaultSpeed) {
+        this.currentSpeed -= 0.25;
+      }
+      // Rev matching sound effect will play while down arrow is pressed
+      if (!this.decelerationSound.isPlaying) {
+        this.decelerationSound.play({ loop: true });
+      }
+    } else {
+      if (this.decelerationSound.isPlaying) {
+        this.decelerationSound.stop();
+      }
     }
   }
 
   spawnCar() {
     // Spawn a car at a random lane on the road
+  }
+
+  zeroPad(number, size) {
+    var stringNumber = String(number);
+    while (stringNumber.length < (size || 2)) {
+      stringNumber = "0" + stringNumber;
+    }
+    return stringNumber;
+  }
+
+  updateScore() {
+    if (!this.gameOver) {
+      this.score += gameSettings.pointsIteration;
+      let scoreFormated = this.zeroPad(this.score, 6);
+      this.scoreLabel.text = "SCORE " + scoreFormated;
+    }
   }
 }
