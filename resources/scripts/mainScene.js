@@ -38,9 +38,10 @@ class mainScene extends Phaser.Scene {
     this.background.setOrigin(0, 0);
 
     this.player = this.physics.add.sprite(487, 850, "cars", "lambo");
-    this.player.setScale(2);
+    this.player.setScale(2.5);
     this.player.setCollideWorldBounds(true);
-    this.currentSpeed = gameSettings.defaultSpeed;
+    this.currentSpeed = gameSettings.minSpeed;
+
     this.cursorKeys = this.input.keyboard.createCursorKeys();
 
     this.carList = [
@@ -129,22 +130,15 @@ class mainScene extends Phaser.Scene {
     this.accelerationSound = this.sound.add("accelerate");
     this.decelerationSound = this.sound.add("decelerate");
     this.music = this.sound.add("music");
-    const musicConfig = {
-      mute: false,
-      volume: 0.5,
-      rate: 1,
-      detune: 0,
-      seek: 0,
-      loop: true,
-      delay: 0,
-    };
-    this.music.play(musicConfig);
+    this.music.play(gameSettings.musicConfig);
   }
 
   update() {
     this.background.tilePositionY -= this.currentSpeed;
     this.movePlayerManager();
     this.updateScore();
+    this.toggleSound();
+    this.toggleMusic();
   }
 
   movePlayerManager() {
@@ -159,7 +153,7 @@ class mainScene extends Phaser.Scene {
       this.player.setAccelerationX(-15000);
       this.player.setAngle(-10);
     }
-    if (this.cursorKeys.right.isDown && this.player.x < 680) {
+    if (this.cursorKeys.right.isDown && this.player.x < 675) {
       this.player.setAccelerationX(15000);
       this.player.setAngle(10);
     }
@@ -185,7 +179,8 @@ class mainScene extends Phaser.Scene {
     if (this.cursorKeys.down.isDown) {
       this.player.setAccelerationY(18000);
 
-      if (this.currentSpeed > gameSettings.defaultSpeed) {
+      // Create illusion of slowing down as long as min speed has not been reached
+      if (this.currentSpeed > gameSettings.minSpeed) {
         this.currentSpeed -= 0.25;
       }
       // Rev matching sound effect will play while down arrow is pressed
@@ -216,6 +211,24 @@ class mainScene extends Phaser.Scene {
       this.score += gameSettings.pointsIteration;
       let scoreFormated = this.zeroPad(this.score, 6);
       this.scoreLabel.text = "SCORE " + scoreFormated;
+    }
+  }
+
+  toggleSound() {
+    if (!gameSettings.soundEnabled) {
+      this.accelerationSound.setMute(true);
+      this.decelerationSound.setMute(true);
+    } else {
+      this.accelerationSound.setMute(false);
+      this.decelerationSound.setMute(false);
+    }
+  }
+
+  toggleMusic() {
+    if (!gameSettings.musicEnabled) {
+      this.music.setMute(true);
+    } else {
+      this.music.setMute(false);
     }
   }
 }

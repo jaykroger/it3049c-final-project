@@ -81,16 +81,27 @@ function setGameDifficulty(trafficData) {
 getPlayerLocation(setCoords);
 
 const gameSettings = {
-  defaultSpeed: 10,
-  maxSpeed: 20,
+  minSpeed: 10,
+  maxSpeed: 25,
   difficulty: "",
   pointsIteration: 1,
   username: "Jay",
+  soundEnabled: true,
+  musicEnabled: true,
+  musicConfig: {
+    mute: false,
+    volume: 0.5,
+    rate: 1,
+    detune: 0,
+    seek: 0,
+    loop: true,
+    delay: 0,
+  },
 };
 
 const config = {
   type: Phaser.AUTO,
-  width: 845,
+  width: 840,
   height: 900,
   scene: mainScene,
   physics: {
