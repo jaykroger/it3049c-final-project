@@ -4,7 +4,6 @@ class mainScene extends Phaser.Scene {
   }
 
   preload() {
-    console.log("Loading assets...");
     this.load.image("highway", "/resources/assets/images/highway.png");
 
     // Load in Cars Atlas
