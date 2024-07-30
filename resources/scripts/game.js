@@ -76,9 +76,9 @@ function setGameDifficulty(trafficData) {
   );
 }
 
-// MAIN
-
-getPlayerLocation(setCoords);
+function setHighScore(element) {
+  element.innerHTML = `High Score: ${localStorage.getItem("highScore")}}`;
+}
 
 const gameSettings = {
   minSpeed: 10,
@@ -97,6 +97,7 @@ const gameSettings = {
     loop: true,
     delay: 0,
   },
+  highScore: localStorage.getItem("highScore"),
 };
 
 const config = {
@@ -111,6 +112,10 @@ const config = {
     },
   },
 };
+
+// MAIN
+
+getPlayerLocation(setCoords);
 
 console.log("Starting game...");
 const game = new Phaser.Game(config);
