@@ -85,8 +85,8 @@ const gameSettings = {
   maxSpeed: 25,
   difficulty: "",
   pointsIteration: 1,
-  username: "Jay",
-  soundEnabled: true,
+  username: "RONALD",
+  soundEnabled: false,
   musicEnabled: true,
   musicConfig: {
     mute: false,

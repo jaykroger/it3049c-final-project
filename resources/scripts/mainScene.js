@@ -17,6 +17,7 @@ class mainScene extends Phaser.Scene {
     // Load audio and sound effects
     this.load.audio("accelerate", "resources/assets/audio/accelerate.mp3");
     this.load.audio("decelerate", "resources/assets/audio/decelerate.mp3");
+    this.load.audio("carCrash", "resources/assets/audio/crash.mp3");
     this.load.audio("music", "resources/assets/audio/mutecity.mp3");
 
     // Load font
@@ -40,6 +41,7 @@ class mainScene extends Phaser.Scene {
     this.player = this.physics.add.sprite(487, 850, "cars", "lambo");
     this.player.setScale(2.5);
     this.player.setCollideWorldBounds(true);
+    this.player.setPushable(true);
     this.currentSpeed = gameSettings.minSpeed;
 
     this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -96,12 +98,10 @@ class mainScene extends Phaser.Scene {
       "bike",
     ];
 
-
-
-    this.car1 = this.add.sprite(487, 100, "cars", "pickup");
-    this.car2 = this.add.sprite(487, 100, "cars", "pickup");
-    this.car3 = this.add.sprite(487, 100, "cars", "pickup");
-    this.car4 = this.add.sprite(487, 100, "cars", "pickup");
+    this.car1 = this.physics.add.sprite(487, -100, "cars", "pickup");
+    this.car2 = this.physics.add.sprite(487, 20, "cars", "convertible");
+    this.car3 = this.physics.add.sprite(611, 600, "cars", "bike");
+    this.car4 = this.physics.add.sprite(611, 0, "cars", "bmw2");
 
     this.car1.setScale(2.5);
     this.car2.setScale(2.5);
@@ -113,15 +113,27 @@ class mainScene extends Phaser.Scene {
     this.car3.setInteractive();
     this.car4.setInteractive();
 
+    this.car1.setPushable(false);
+    this.car2.setPushable(false);
+    this.car3.setPushable(false);
+    this.car4.setPushable(false);
+
     this.traffic = this.physics.add.group();
     this.traffic.add(this.car1);
     this.traffic.add(this.car2);
     this.traffic.add(this.car3);
     this.traffic.add(this.car4);
 
-    this.physics.add.overlap(this.player, this.traffic, this.hurtPlayer, null, this);
+    this.physics.add.collider(
+      this.player,
+      this.traffic,
+      this.hurtPlayer,
+      null,
+      this
+    );
 
     this.gameOver = false;
+    this.crashed = false;
 
     // add scoreboard
     let graphics = this.add.graphics();
@@ -145,7 +157,7 @@ class mainScene extends Phaser.Scene {
       32
     );
     this.usernameLabel = this.add.bitmapText(
-      780,
+      740,
       20,
       "pixelFont",
       gameSettings.username.toLocaleUpperCase(),
@@ -154,6 +166,14 @@ class mainScene extends Phaser.Scene {
 
     this.accelerationSound = this.sound.add("accelerate");
     this.decelerationSound = this.sound.add("decelerate");
+    this.crashSound = this.sound.add("carCrash");
+
+    // Source: F-Zero
+    // Arrangement: Yasufumi Fukuda
+    // Composition: Nintendo
+    // Composition and arrangement Copyright Nintendo
+    // All rights belong to their respective owners!
+
     this.music = this.sound.add("music");
     this.music.play(gameSettings.musicConfig);
   }
@@ -164,79 +184,105 @@ class mainScene extends Phaser.Scene {
     this.updateScore();
     this.toggleSound();
     this.toggleMusic();
-    this.moveCar(this.car1)
-    this.moveCar(this.car2)
-    this.moveCar(this.car3)
-    this.moveCar(this.car4)
+    this.moveCar(this.car1);
+    this.moveCar(this.car2);
+    this.moveCar(this.car3);
+    this.moveCar(this.car4);
   }
 
-  hurtPlayer() {
-    console.log("Player has hit a car!")
-    this.gameOver = true
+  hurtPlayer(player, car) {
+    // Set game over flag
+    this.gameOver = true;
+
+    this.player.setVelocity(0);
+    this.player.setAcceleration(0);
+    this.player.setCollideWorldBounds(false);
+
+    // Stop sounds
+    this.accelerationSound.stop();
+    this.decelerationSound.stop();
+
+    // play crash sound
+    if (!this.crashed) {
+      this.crashSound.play();
+      this.crashed = true;
+    }
+
+    // Create game over title
+    this.createGameOverTitle();
+
+    // Move the player's car off the screen to the bottom when crash occurs
+    this.player.setVelocityX(0);
+    this.player.setVelocityY(this.currentSpeed * 30);
   }
+
+  crashPlayerCar() {
+    this.player.y += 1;
+  }
+
   movePlayerManager() {
     // Handle all player movement
     // Reset player velocity and angle when no button is being pressed
-    this.player.setVelocity(0);
-    this.player.setAcceleration(0);
-    this.player.setAngle(0);
+    if (!this.gameOver) {
+      this.player.setVelocity(0);
+      this.player.setAcceleration(0);
+      this.player.setAngle(0);
 
-    // Move player left and right and add rotation to simulate steering
-    if (this.cursorKeys.left.isDown && this.player.x > 170) {
-      this.player.setAccelerationX(-15000);
-      this.player.setAngle(-10);
-    }
-    if (this.cursorKeys.right.isDown && this.player.x < 675) {
-      this.player.setAccelerationX(15000);
-      this.player.setAngle(10);
-    }
+      // Move player left and right and add rotation to simulate steering
+      if (this.cursorKeys.left.isDown && this.player.x > 170) {
+        this.player.setAccelerationX(-15000);
+        this.player.setAngle(-10);
+      }
+      if (this.cursorKeys.right.isDown && this.player.x < 675) {
+        this.player.setAccelerationX(15000);
+        this.player.setAngle(10);
+      }
 
-    if (this.cursorKeys.up.isDown) {
-      this.player.setAccelerationY(-15000);
+      if (this.cursorKeys.up.isDown) {
+        this.player.setAccelerationY(-15000);
 
-      // Acceleration mechanics:
-      // Create illusion of going faster as long as max speed as not been reached
-      if (this.currentSpeed < gameSettings.maxSpeed) {
-        this.currentSpeed += 0.2;
+        // Acceleration mechanics:
+        // Create illusion of going faster as long as max speed as not been reached
+        if (this.currentSpeed < gameSettings.maxSpeed) {
+          this.currentSpeed += 0.2;
+        }
+        // Acceleration sound will play while up arrow is pressed
+        if (!this.accelerationSound.isPlaying) {
+          this.accelerationSound.play({ loop: true });
+        }
+      } else {
+        if (this.accelerationSound.isPlaying) {
+          this.accelerationSound.stop();
+        }
       }
-      // Acceleration sound will play while up arrow is pressed
-      if (!this.accelerationSound.isPlaying) {
-        this.accelerationSound.play({ loop: true });
-      }
-    } else {
-      if (this.accelerationSound.isPlaying) {
-        this.accelerationSound.stop();
-      }
-    }
 
-    if (this.cursorKeys.down.isDown) {
-      this.player.setAccelerationY(18000);
+      if (this.cursorKeys.down.isDown) {
+        this.player.setAccelerationY(18000);
 
-      // Create illusion of slowing down as long as min speed has not been reached
-      if (this.currentSpeed > gameSettings.minSpeed) {
-        this.currentSpeed -= 0.25;
-      }
-      // Rev matching sound effect will play while down arrow is pressed
-      if (!this.decelerationSound.isPlaying) {
-        this.decelerationSound.play({ loop: true });
-      }
-    } else {
-      if (this.decelerationSound.isPlaying) {
-        this.decelerationSound.stop();
+        // Create illusion of slowing down as long as min speed has not been reached
+        if (this.currentSpeed > gameSettings.minSpeed) {
+          this.currentSpeed -= 0.25;
+        }
+        // Rev matching sound effect will play while down arrow is pressed
+        if (!this.decelerationSound.isPlaying) {
+          this.decelerationSound.play({ loop: true });
+        }
+      } else {
+        if (this.decelerationSound.isPlaying) {
+          this.decelerationSound.stop();
+        }
       }
     }
   }
 
   moveCar(car) {
-
     if (car.x == 229 || car.x == 353) {
-      car.y += 5 * 1.5 + (Phaser.Math.Between(0, 3))
-    }
-    else {
-      car.y += 5 + (Phaser.Math.Between(0, 3))
+      car.y += 5 * 1.5 + Phaser.Math.Between(0, 3);
+    } else {
+      car.y += 5 + Phaser.Math.Between(0, 3);
     }
 
-    if (car.y > config.height) {
+    if (car.y > config.height + 80) {
       this.resetCarPos(car, 5);
     }
   }
@@ -248,39 +294,39 @@ class mainScene extends Phaser.Scene {
 
     switch (randomCar) {
       case 0:
-        car.setFrame("dumptruck")
+        car.setFrame("dumptruck");
         car.setScale(1.8);
         break;
       case 1:
-        car.setFrame("tow_truck")
+        car.setFrame("tow_truck");
         car.setScale(2.5);
         break;
       case 2:
-        car.setFrame("tow_truck2")
+        car.setFrame("tow_truck2");
         car.setScale(2.5);
         break;
       case 3:
-        car.setFrame("tow_truck3")
+        car.setFrame("tow_truck3");
         car.setScale(2.5);
         break;
       case 4:
-        car.setFrame("truck2")
+        car.setFrame("truck2");
         car.setScale(2.5);
         break;
       case 5:
-        car.setFrame("truck3")
+        car.setFrame("truck3");
         car.setScale(2.5);
         break;
       case 6:
-        car.setFrame("landcruiser")
+        car.setFrame("landcruiser");
         car.setScale(2.5);
         break;
       case 7:
-        car.setFrame("landcruiser2")
+        car.setFrame("landcruiser2");
         car.setScale(2.5);
         break;
       case 8:
-        car.setFrame("landcruiser3")
+        car.setFrame("landcruiser3");
         car.setScale(2.5);
         break;
       case 9:
@@ -447,24 +493,24 @@ class mainScene extends Phaser.Scene {
 
     switch (randomX) {
       case 0:
-        car.x = 229
-        car.y += speed
-        car.setAngle(180)
+        car.x = 229;
+        car.y += speed;
+        car.setAngle(180);
         break;
       case 1:
-        car.x = 353
-        car.y += speed
-        car.setAngle(180)
+        car.x = 353;
+        car.y += speed;
+        car.setAngle(180);
         break;
       case 2:
-        car.x = 478
-        car.y += speed
-        car.setAngle(0)
+        car.x = 478;
+        car.y += speed;
+        car.setAngle(0);
         break;
       case 3:
-        car.x = 611
-        car.y += speed
-        car.setAngle(0)
+        car.x = 611;
+        car.y += speed;
+        car.setAngle(0);
         break;
     }
   }
@@ -492,6 +538,7 @@ class mainScene extends Phaser.Scene {
     } else {
       this.accelerationSound.setMute(false);
       this.decelerationSound.setMute(false);
+      this.crashSound.setMute(false);
     }
   }
 
@@ -501,5 +548,29 @@ class mainScene extends Phaser.Scene {
     } else {
       this.music.setMute(false);
     }
+  }
+
+  createGameOverTitle() {
+    this.time.delayedCall(3000, () => {
+      // create game over title
+      let gameOverTitle = this.add.graphics();
+      gameOverTitle.fillStyle(0x000000, 1);
+      gameOverTitle.beginPath();
+      gameOverTitle.moveTo(config.width / 2 - 120, config.height / 2 - 30);
+      gameOverTitle.lineTo(config.width / 2 + 120, config.height / 2 - 30);
+      gameOverTitle.lineTo(config.width / 2 + 120, config.height / 2 + 30);
+      gameOverTitle.lineTo(config.width / 2 - 120, config.height / 2 + 30);
+      gameOverTitle.lineTo(config.width / 2 - 120, config.height / 2 - 30);
+      gameOverTitle.closePath();
+      gameOverTitle.fillPath();
+
+      this.gameOverText = this.add.bitmapText(
+        config.width / 2 - 75,
+        config.height / 2 - 12,
+        "pixelFont",
+        "GAME OVER",
+        40
+      );
+    });
   }
 }
