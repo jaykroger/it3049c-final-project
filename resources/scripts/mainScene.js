@@ -98,10 +98,10 @@ class mainScene extends Phaser.Scene {
 
 
 
-    this.car1 = this.add.sprite(487, 100, "cars", "pickup");
-    this.car2 = this.add.sprite(487, 100, "cars", "pickup");
-    this.car3 = this.add.sprite(487, 100, "cars", "pickup");
-    this.car4 = this.add.sprite(487, 100, "cars", "pickup");
+    this.car1 = this.add.sprite(229, 100, "cars", "pickup");
+    this.car2 = this.add.sprite(229, 200, "cars", "pickup");
+    this.car3 = this.add.sprite(487, 0, "cars", "pickup");
+    this.car4 = this.add.sprite(487, 50, "cars", "pickup");
 
     this.car1.setScale(2.5);
     this.car2.setScale(2.5);
@@ -120,6 +120,9 @@ class mainScene extends Phaser.Scene {
     this.traffic.add(this.car4);
 
     this.physics.add.overlap(this.player, this.traffic, this.hurtPlayer, null, this);
+
+    this.physics.add.overlap(this.car1, this.traffic, this.seperateTraffic(this.car1), null, this);
+    this.physics.add.overlap(this.car3, this.traffic, this.seperateTraffic(this.car3), null, this);
 
     this.gameOver = false;
 
@@ -168,6 +171,12 @@ class mainScene extends Phaser.Scene {
     this.moveCar(this.car2)
     this.moveCar(this.car3)
     this.moveCar(this.car4)
+  }
+
+  seperateTraffic(car) {
+    var randomTime = Phaser.Math.Between(1000, 2000);
+    this.time.delayedCall(randomTime, () => { }, [], this)
+    car.y = 0;
   }
 
   hurtPlayer() {
