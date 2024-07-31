@@ -28,7 +28,7 @@ class mainScene extends Phaser.Scene {
     );
   }
 
-  create() {
+  create(data) {
     const username = data.user;
     this.background = this.add.tileSprite(
       0,
