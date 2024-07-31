@@ -1,6 +1,12 @@
-Final Project Template
+Nitro
 =====================
 
-Instructions to this assignment can be found [here](https://uc.instructure.com/courses/1641850/assignments/20048162).
+A project by:
 
-NOTE: While this repo does contain a starter template you can use for your project, you are not limited to what is included here. Feel free to add/remove dependencies as you see fit for your project.
+Jay Kroger @jaykroger
+Robbie Ballou: @FriarobbyCollege
+Landon Hunter: @Shnickelbob
+Joel Mensah: @Joel7721
+
+
+Nitro seeks to replicat the experience of the classic arcade racing game- with a twist. Using browser location services and the TomTom Traffic Flow API, Nitro is able to calculate the difficulty of the game based on the traffic at your location, providing a gaming experience with maximum immersion as you fly through the streets.
