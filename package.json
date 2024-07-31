@@ -4,8 +4,6 @@
   "description": "",
   "scripts": {
     "start": "open index.html",
-    "test": "jest",
-    "test:watch": "jest --watchAll",
     "postinstall": "node .scripts/badge.js"
   },
   "author": "Yahya Gilany <gilanyym@ucmail.uc.edu>",
