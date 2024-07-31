@@ -10,16 +10,30 @@
             href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Press+Start+2P&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Teko:wght@300..700&family=VT323&display=swap"
             rel="stylesheet"
         />
-        <script src="resources/scripts/phaser.min.js"></script>
-        <script src="resources/scripts/mainScene.js"></script>
-        <script src="resources/scripts/game.js"></script>
     </head>
     <body>
-        <div>
+        <div id="title">
             <h1>Nitro</h1>
+            <div id="highscore">High Score: 0</div>
         </div>
         <div id="game-box">
             <div id="game"></div>
         </div>
+        <div id="name-container">
+            <div>
+                <input
+                    type="text"
+                    id="playerName"
+                    placeholder="Enter your name"
+                />
+            </div>
+            <div>
+                <button id="startButton">Start Game</button>
+            </div>
+        </div>
     </body>
+    <script src="resources/scripts/phaser.min.js"></script>
+    <script src="resources/scripts/titleScene.js"></script>
+    <script src="resources/scripts/mainScene.js"></script>
+    <script src="resources/scripts/game.js"></script>
 </html>

@@ -1,6 +1,9 @@
 body {
     background-color: #0a0a0a;
     margin: 0px 0px 100px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 h1 {
@@ -8,14 +11,63 @@ h1 {
     color: #f0f0f0;
     font-family: 'Press Start 2P', sans-serif;
     font-size: 100px;
-    margin: 10px 10px 0px 10px;
-    padding: 100px 10px 10px 10px;
 }
 
-html, #game-box {
+#highscore {
+    font-family: 'Press Start 2P', sans-serif;
+    display: block;
+    color: #ffffff;
+    text-align: center;
+    margin: 0px 0px 20px 0px;
+}
+
+#name-container {
+    margin: 20px 0px 50px 0px;
+    display: block;
+    justify-content: center;
+}
+
+#playerName {
+    width: 290px;
+    height: 30px;
+    border-color: #ffffff;
+    border-width: 3px;
+    border-radius: 5px;
+    background-color: #0a0a0a;
+}
+
+#playerName::placeholder {
+    color: #ffffff;
+    padding: 1px;
+}
+
+input, select, #playerName {
+    color: #ffffff;
+}
+
+#startButton {
+    margin: 20px 0px 0px 0px;
+    background-color: #0a0a0a;
+    color: #ffffff;
+    font-size: 20px;
+    width: 300px;
+    height: 60px;
+    border-color: #ffffff;
+    border-width: 3px;
+    border-radius: 30px;
+    transition: all 0.5s ease-in-out;
+}
+
+#startButton:hover {
+    color: #0a0a0a;
+    background-color: #ffffff;
+}
+
+#game-box {
+    flex: 1;
     height: 100%;
-    margin: 0;
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
 }
+

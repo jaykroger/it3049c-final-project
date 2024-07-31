@@ -1,6 +1,7 @@
 class mainScene extends Phaser.Scene {
   constructor() {
     super("mainScene");
+    this.timeDelay = 0;
   }
 
   preload() {
@@ -29,6 +30,7 @@ class mainScene extends Phaser.Scene {
   }
 
   create() {
+    this.username = gameSettings.username;
     this.background = this.add.tileSprite(
       0,
       0,
@@ -46,62 +48,10 @@ class mainScene extends Phaser.Scene {
 
     this.cursorKeys = this.input.keyboard.createCursorKeys();
 
-    this.carList = [
-      "dumptruck",
-      "tow_truck",
-      "tow_truck2",
-      "tow_truck3",
-      "truck2",
-      "truck3",
-      "landcruiser",
-      "landcruiser2",
-      "landcruiser3",
-      "van",
-      "raptor",
-      "raptor2",
-      "pickup",
-      "pickup2",
-      "pickup3",
-      "suv",
-      "suv2",
-      "van2",
-      "van3",
-      "mustang2",
-      "camaro",
-      "camaro2",
-      "challenger2",
-      "challenger3",
-      "lexus",
-      "lexus2",
-      "gwagon",
-      "bmw",
-      "gwagon2",
-      "patrol",
-      "patrol2",
-      "lexus3",
-      "taxi",
-      "taxi2",
-      "lambo2",
-      "lancer",
-      "bmw2",
-      "bmw3",
-      "lancer2",
-      "mustang3",
-      "mini",
-      "tida2",
-      "tida3",
-      "convertible",
-      "figo",
-      "figo2",
-      "porsche",
-      "bike2",
-      "bike",
-    ];
-
-    this.car1 = this.physics.add.sprite(487, -100, "cars", "pickup");
-    this.car2 = this.physics.add.sprite(487, 20, "cars", "convertible");
-    this.car3 = this.physics.add.sprite(611, 600, "cars", "bike");
-    this.car4 = this.physics.add.sprite(611, 0, "cars", "bmw2");
+    this.car1 = this.physics.add.sprite(229, -300, "cars", "pickup");
+    this.car2 = this.physics.add.sprite(487, -30, "cars", "convertible");
+    this.car3 = this.physics.add.sprite(611, 0, "cars", "bike");
+    this.car4 = this.physics.add.sprite(611, -40, "cars", "bmw2");
 
     this.car1.setScale(2.5);
     this.car2.setScale(2.5);
@@ -124,6 +74,40 @@ class mainScene extends Phaser.Scene {
     this.traffic.add(this.car3);
     this.traffic.add(this.car4);
 
+    // Calculate delay between spawning cars based on the calculated traffic difficulty
+
+    if (gameSettings.difficulty === "Easy") {
+      this.timeDelay = 4000;
+    } else if (gameSettings.difficulty === "Medium") {
+      this.timeDelay = 3000;
+    } else if (gameSettings.difficulty === "Hard") {
+      this.timeDelay = 2000;
+    } else if (gameSettings.difficulty === "Ultra Hard") {
+      this.timeDelay = 1000;
+    }
+    this.player.alpha = 0.5;
+    this.accumulateScore = false;
+    this.physics.world.removeCollider(this.player);
+    var tween = this.tweens.add({
+      targets: this.player,
+      y: config.height - 64,
+      ease: "Power1",
+      duration: this.timeDelay - 100,
+      repeat: 0,
+      onComplete: function () {
+        this.accumulateScore = true;
+        this.physics.add.collider(
+          this.player,
+          this.traffic,
+          this.hurtPlayer,
+          null,
+          this
+        );
+        this.player.alpha = 1;
+      },
+      callbackScope: this,
+    });
+
     this.physics.add.collider(
       this.player,
       this.traffic,
@@ -132,37 +116,33 @@ class mainScene extends Phaser.Scene {
       this
     );
 
+    this.physics.add.overlap(
+      this.player,
+      this.traffic,
+      this.hurtPlayer,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.car1,
+      this.traffic,
+      this.seperateTraffic(this.car1),
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.car3,
+      this.traffic,
+      this.seperateTraffic(this.car3),
+      null,
+      this
+    );
+
+    this.createHUD();
+
     this.gameOver = false;
     this.crashed = false;
-
-    // add scoreboard
-    let graphics = this.add.graphics();
-    graphics.fillStyle(0x000000, 1);
-    graphics.beginPath();
-    graphics.moveTo(0, 0);
-    graphics.lineTo(config.width, 0);
-    graphics.lineTo(config.width, 60);
-    graphics.lineTo(0, 60);
-    graphics.lineTo(0, 0);
-    graphics.closePath();
-    graphics.fillPath();
-
-    this.score = 0;
-    let scoreFormated = this.zeroPad(this.score, 6);
-    this.scoreLabel = this.add.bitmapText(
-      20,
-      20,
-      "pixelFont",
-      "SCORE " + scoreFormated,
-      32
-    );
-    this.usernameLabel = this.add.bitmapText(
-      740,
-      20,
-      "pixelFont",
-      gameSettings.username.toLocaleUpperCase(),
-      32
-    );
 
     this.accelerationSound = this.sound.add("accelerate");
     this.decelerationSound = this.sound.add("decelerate");
@@ -184,10 +164,19 @@ class mainScene extends Phaser.Scene {
     this.updateScore();
     this.toggleSound();
     this.toggleMusic();
-    this.moveCar(this.car1);
-    this.moveCar(this.car2);
-    this.moveCar(this.car3);
-    this.moveCar(this.car4);
+
+    this.time.delayedCall(this.timeDelay, () => {
+      this.moveCar(this.car1);
+      this.moveCar(this.car2);
+      this.moveCar(this.car3);
+      this.moveCar(this.car4);
+    });
+  }
+
+  seperateTraffic(car) {
+    var randomTime = Phaser.Math.Between(1000, 2000);
+    this.time.delayedCall(randomTime, () => {}, [], this);
+    car.y = 0;
   }
 
   hurtPlayer(player, car) {
@@ -210,14 +199,11 @@ class mainScene extends Phaser.Scene {
 
     // Create game over title
     this.createGameOverTitle();
+    this.checkHighscore();
 
     // Move the player's car off the screen to the bottom when crash occurs
     this.player.setVelocityX(0);
     this.player.setVelocityY(this.currentSpeed * 30);
-  }
-
-  crashPlayerCar() {
-    this.player.y += 1;
   }
 
   movePlayerManager() {
@@ -282,15 +268,28 @@ class mainScene extends Phaser.Scene {
       car.y += 5 + Phaser.Math.Between(0, 3);
     }
 
+    // Calculate delay between spawning cars based on the calculated traffic difficulty
+    let timeDelay = 0;
+    if (gameSettings.difficulty === "Easy") {
+      timeDelay = Phaser.Math.Between(400, 499);
+    } else if (gameSettings.difficulty === "Medium") {
+      timeDelay = Phaser.Math.Between(300, 399);
+    } else if (gameSettings.difficulty === "Hard") {
+      timeDelay = Phaser.Math.Between(200, 299);
+    } else if (gameSettings.difficulty === "Ultra Hard") {
+      timeDelay = Phaser.Math.Between(0, 199);
+    }
+
     if (car.y > config.height + 80) {
-      this.resetCarPos(car, 5);
+      this.time.delayedCall(timeDelay, () => {
+        this.resetCarPos(car, 5);
+      });
     }
   }
 
   resetCarPos(car, speed) {
-    car.y = 0;
-    var randomX = Phaser.Math.Between(0, 3);
-    var randomCar = Phaser.Math.Between(0, 48);
+    let randomX = Phaser.Math.Between(0, 3);
+    let randomCar = Phaser.Math.Between(0, 48);
 
     switch (randomCar) {
       case 0:
@@ -491,6 +490,8 @@ class mainScene extends Phaser.Scene {
         break;
     }
 
+    car.y = -150;
+
     switch (randomX) {
       case 0:
         car.x = 229;
@@ -524,10 +525,10 @@ class mainScene extends Phaser.Scene {
   }
 
   updateScore() {
-    if (!this.gameOver) {
+    if (!this.gameOver && this.accumulateScore) {
       this.score += gameSettings.pointsIteration;
-      let scoreFormated = this.zeroPad(this.score, 6);
-      this.scoreLabel.text = "SCORE " + scoreFormated;
+      let scoreFormatted = this.zeroPad(this.score, 6);
+      this.scoreLabel.text = "SCORE " + scoreFormatted;
     }
   }
 
@@ -548,6 +549,39 @@ class mainScene extends Phaser.Scene {
     } else {
       this.music.setMute(false);
     }
+  }
+
+  createHUD() {
+    // add scoreboard and HUD at top of screen
+    // Code for Scoreboard from Ansimuz on YouTube:
+    // Getting started with Phaser 3 Tutorial
+    let graphics = this.add.graphics();
+    graphics.fillStyle(0x000000, 1);
+    graphics.beginPath();
+    graphics.moveTo(0, 0);
+    graphics.lineTo(config.width, 0);
+    graphics.lineTo(config.width, 60);
+    graphics.lineTo(0, 60);
+    graphics.lineTo(0, 0);
+    graphics.closePath();
+    graphics.fillPath();
+
+    this.score = 0;
+    let scoreFormated = this.zeroPad(this.score, 6);
+    this.scoreLabel = this.add.bitmapText(
+      20,
+      20,
+      "pixelFont",
+      "SCORE " + scoreFormated,
+      32
+    );
+    this.usernameLabel = this.add.bitmapText(
+      740,
+      20,
+      "pixelFont",
+      this.username.toUpperCase(),
+      32
+    );
   }
 
   createGameOverTitle() {
@@ -572,5 +606,12 @@ class mainScene extends Phaser.Scene {
         40
       );
     });
+  }
+
+  checkHighscore() {
+    let highscore = localStorage.getItem("highscore");
+    if (this.score > highscore) {
+      localStorage.setItem("highscore", this.score);
+    }
   }
 }
