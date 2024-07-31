@@ -5,7 +5,7 @@ class mainScene extends Phaser.Scene {
 
   preload() {
     // Load highway background
-    this.load.image("highway", "/resources/assets/images/highway.png");
+    this.load.image("highway", "resources/assets/images/highway.png");
 
     // Load in cars sprite atlas
     this.load.atlas(
@@ -102,6 +102,8 @@ class mainScene extends Phaser.Scene {
       null,
       this
     );
+
+    this.createHUD();
 
     this.gameOver = false;
     this.crashed = false;
@@ -486,8 +488,8 @@ class mainScene extends Phaser.Scene {
   updateScore() {
     if (!this.gameOver) {
       this.score += gameSettings.pointsIteration;
-      let scoreFormated = this.zeroPad(this.score, 6);
-      this.scoreLabel.text = "SCORE " + scoreFormated;
+      let scoreFormatted = this.zeroPad(this.score, 6);
+      this.scoreLabel.text = "SCORE " + scoreFormatted;
     }
   }
 
