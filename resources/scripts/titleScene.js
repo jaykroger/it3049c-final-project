@@ -7,7 +7,7 @@ class titleScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("highway", "/resources/assets/images/highway.png");
+    this.load.image("highway", "resources/assets/images/highway.png");
 
     // Load in cars sprite atlas
     this.load.atlas(
