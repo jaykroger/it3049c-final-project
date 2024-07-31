@@ -48,7 +48,7 @@ class mainScene extends Phaser.Scene {
 
     this.car1 = this.physics.add.sprite(229, -300, "cars", "pickup");
     this.car2 = this.physics.add.sprite(487, -30, "cars", "convertible");
-    this.car3 = this.physics.add.sprite(611, -300, "cars", "bike");
+    this.car3 = this.physics.add.sprite(611, 0, "cars", "bike");
     this.car4 = this.physics.add.sprite(611, -40, "cars", "bmw2");
 
     this.car1.setScale(2.5);
@@ -129,25 +129,10 @@ class mainScene extends Phaser.Scene {
     this.toggleSound();
     this.toggleMusic();
 
-    // Calculate delay between spawning cars based on the calculated traffic difficulty
-    let timeDelay = 0;
-
-    if (gameSettings.difficulty === "Easy") {
-      timeDelay = 4000;
-    } else if (gameSettings.difficulty === "Medium") {
-      timeDelay = 3000;
-    } else if (gameSettings.difficulty === "Hard") {
-      timeDelay = 2000;
-    } else if (gameSettings.difficulty === "Ultra Hard") {
-      timeDelay = 1000;
-    }
-
-    this.time.delayedCall(timeDelay, () => {
-      this.moveCar(this.car1);
-      this.moveCar(this.car2);
-      this.moveCar(this.car3);
-      this.moveCar(this.car4);
-    });
+    this.moveCar(this.car1);
+    this.moveCar(this.car3);
+    this.moveCar(this.car2);
+    this.moveCar(this.car4);
   }
 
   seperateTraffic(car) {
@@ -245,13 +230,26 @@ class mainScene extends Phaser.Scene {
       car.y += 5 + Phaser.Math.Between(0, 3);
     }
 
+    // Calculate delay between spawning cars based on the calculated traffic difficulty
+    let timeDelay = 0;
+    if (gameSettings.difficulty === "Easy") {
+      timeDelay = Phaser.Math.Between(400, 499);
+    } else if (gameSettings.difficulty === "Medium") {
+      timeDelay = Phaser.Math.Between(300, 399);
+    } else if (gameSettings.difficulty === "Hard") {
+      timeDelay = Phaser.Math.Between(200, 299);
+    } else if (gameSettings.difficulty === "Ultra Hard") {
+      timeDelay = Phaser.Math.Between(0, 199);
+    }
+
     if (car.y > config.height + 80) {
-      this.resetCarPos(car, 5);
+      this.time.delayedCall(timeDelay, () => {
+        this.resetCarPos(car, 5);
+      });
     }
   }
 
   resetCarPos(car, speed) {
-    car.y = 0;
     let randomX = Phaser.Math.Between(0, 3);
     let randomCar = Phaser.Math.Between(0, 48);
 
@@ -453,6 +451,8 @@ class mainScene extends Phaser.Scene {
         car.setScale(2.5);
         break;
     }
+
+    car.y = -150;
 
     switch (randomX) {
       case 0:
