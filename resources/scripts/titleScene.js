@@ -1,11 +1,10 @@
 class titleScene extends Phaser.Scene {
   constructor() {
-    super('titleScene');
-    this.username = '';
+    super("titleScene");
+    this.username = "";
     this.startBtn = document.getElementById("startButton");
     this.playerNameInput = document.getElementById("playerName");
   }
-
 
   preload() {
     this.load.image("highway", "/resources/assets/images/highway.png");
@@ -25,91 +24,49 @@ class titleScene extends Phaser.Scene {
     );
   }
   create() {
-
-    this.highway = this.add.tileSprite(0, 0, config.width, config.height, "highway");
+    this.highway = this.add.tileSprite(
+      0,
+      0,
+      config.width,
+      config.height,
+      "highway"
+    );
     this.highway.setOrigin(0, 0);
 
+    this.startBtn.style.display = "inline";
+    this.playerNameInput.style.display = "inline";
 
-    this.startBtn.style.display = 'inline';
-    this.playerNameInput.style.display = 'inline';
+    if (localStorage.getItem("username")) {
+      this.username = localStorage.getItem("username");
+      gameSettings.username = this.username;
+      this.playerNameInput.value = this.username;
+    }
 
     this.startBtn.addEventListener("click", () => {
       this.username = this.playerNameInput.value.trim();
-      if (this.username) {
+      gameSettings.username = this.username;
+      if (gameSettings.username) {
+        localStorage.setItem("username", gameSettings.username);
         this.startGame();
       } else {
-        alert('Please enter a name');
+        alert("Please enter a name.");
       }
     });
+
     let graphics = this.add.graphics();
     graphics.fillStyle(0x000000, 1);
     graphics.beginPath();
     graphics.moveTo(0, 0);
     graphics.lineTo(config.width, 0);
-    graphics.lineTo(config.width, 60);
-    graphics.lineTo(0, 60);
+    graphics.lineTo(config.width, 90);
+    graphics.lineTo(0, 90);
     graphics.lineTo(0, 0);
     graphics.closePath();
     graphics.fillPath();
 
-    this.txt = this.add.bitmapText(
-      config.width / 2,
-      30,
-      "pixelFont",
-      "ENTER YOUR USERNAME",
-      50
-    ).setOrigin(0.5, 0)
-    this.carList = [
-      "dumptruck",
-      "tow_truck",
-      "tow_truck2",
-      "tow_truck3",
-      "truck2",
-      "truck3",
-      "landcruiser",
-      "landcruiser2",
-      "landcruiser3",
-      "van",
-      "raptor",
-      "raptor2",
-      "pickup",
-      "pickup2",
-      "pickup3",
-      "suv",
-      "suv2",
-      "van2",
-      "van3",
-      "mustang2",
-      "camaro",
-      "camaro2",
-      "challenger2",
-      "challenger3",
-      "lexus",
-      "lexus2",
-      "gwagon",
-      "bmw",
-      "gwagon2",
-      "patrol",
-      "patrol2",
-      "lexus3",
-      "taxi",
-      "taxi2",
-      "lambo2",
-      "lancer",
-      "bmw2",
-      "bmw3",
-      "lancer2",
-      "mustang3",
-      "mini",
-      "tida2",
-      "tida3",
-      "convertible",
-      "figo",
-      "figo2",
-      "porsche",
-      "bike2",
-      "bike",
-    ];
+    this.txt = this.add
+      .bitmapText(config.width / 2, 30, "pixelFont", "ENTER YOUR USERNAME", 50)
+      .setOrigin(0.5, 0);
 
     this.car2 = this.physics.add.sprite(487, 20, "cars", "convertible");
     this.car3 = this.physics.add.sprite(611, 600, "cars", "bike");
@@ -364,8 +321,12 @@ class titleScene extends Phaser.Scene {
     }
   }
   startGame() {
-    this.startBtn.style.display = 'none';
-    this.playerNameInput.style.display = 'none';
-    this.scene.start('mainScene', { user: this.username }, { transition: { duration: 500, easing: 'Linear' } });
+    this.startBtn.style.display = "none";
+    this.playerNameInput.style.display = "none";
+    this.scene.start(
+      "mainScene",
+      { user: this.username },
+      { transition: { duration: 500, easing: "Linear" } }
+    );
   }
 }
