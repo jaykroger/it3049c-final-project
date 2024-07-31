@@ -63,7 +63,7 @@ function setGameDifficulty(trafficData) {
   } else if (currentSpeed < 70 && currentSpeed > 50) {
     trafficDifficulty = "Medium";
   } else if (currentSpeed < 50 && currentSpeed > 30) {
-    trafficDiculty = "Hard";
+    trafficDifficulty = "Hard";
   } else if (currentSpeed < 30) {
     trafficDifficulty = "Ultra Hard";
   }
@@ -74,10 +74,6 @@ function setGameDifficulty(trafficData) {
   console.log(
     `Difficulty set to ${gameSettings.difficulty} based on traffic conditions.`
   );
-}
-
-function setHighScore(element) {
-  element.innerHTML = `High Score: ${localStorage.getItem("highScore")}}`;
 }
 
 const gameSettings = {
@@ -97,7 +93,6 @@ const gameSettings = {
     loop: true,
     delay: 0,
   },
-  highScore: localStorage.getItem("highScore"),
 };
 
 const config = {

@@ -46,62 +46,10 @@ class mainScene extends Phaser.Scene {
 
     this.cursorKeys = this.input.keyboard.createCursorKeys();
 
-    this.carList = [
-      "dumptruck",
-      "tow_truck",
-      "tow_truck2",
-      "tow_truck3",
-      "truck2",
-      "truck3",
-      "landcruiser",
-      "landcruiser2",
-      "landcruiser3",
-      "van",
-      "raptor",
-      "raptor2",
-      "pickup",
-      "pickup2",
-      "pickup3",
-      "suv",
-      "suv2",
-      "van2",
-      "van3",
-      "mustang2",
-      "camaro",
-      "camaro2",
-      "challenger2",
-      "challenger3",
-      "lexus",
-      "lexus2",
-      "gwagon",
-      "bmw",
-      "gwagon2",
-      "patrol",
-      "patrol2",
-      "lexus3",
-      "taxi",
-      "taxi2",
-      "lambo2",
-      "lancer",
-      "bmw2",
-      "bmw3",
-      "lancer2",
-      "mustang3",
-      "mini",
-      "tida2",
-      "tida3",
-      "convertible",
-      "figo",
-      "figo2",
-      "porsche",
-      "bike2",
-      "bike",
-    ];
-
-    this.car1 = this.physics.add.sprite(487, -100, "cars", "pickup");
-    this.car2 = this.physics.add.sprite(487, 20, "cars", "convertible");
-    this.car3 = this.physics.add.sprite(611, 600, "cars", "bike");
-    this.car4 = this.physics.add.sprite(611, 0, "cars", "bmw2");
+    this.car1 = this.physics.add.sprite(229, -300, "cars", "pickup");
+    this.car2 = this.physics.add.sprite(487, -30, "cars", "convertible");
+    this.car3 = this.physics.add.sprite(611, -300, "cars", "bike");
+    this.car4 = this.physics.add.sprite(611, -40, "cars", "bmw2");
 
     this.car1.setScale(2.5);
     this.car2.setScale(2.5);
@@ -132,42 +80,31 @@ class mainScene extends Phaser.Scene {
       this
     );
 
-    this.physics.add.overlap(this.player, this.traffic, this.hurtPlayer, null, this);
+    this.physics.add.overlap(
+      this.player,
+      this.traffic,
+      this.hurtPlayer,
+      null,
+      this
+    );
 
-    this.physics.add.overlap(this.car1, this.traffic, this.seperateTraffic(this.car1), null, this);
-    this.physics.add.overlap(this.car3, this.traffic, this.seperateTraffic(this.car3), null, this);
+    this.physics.add.overlap(
+      this.car1,
+      this.traffic,
+      this.seperateTraffic(this.car1),
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.car3,
+      this.traffic,
+      this.seperateTraffic(this.car3),
+      null,
+      this
+    );
 
     this.gameOver = false;
     this.crashed = false;
-
-    // add scoreboard
-    let graphics = this.add.graphics();
-    graphics.fillStyle(0x000000, 1);
-    graphics.beginPath();
-    graphics.moveTo(0, 0);
-    graphics.lineTo(config.width, 0);
-    graphics.lineTo(config.width, 60);
-    graphics.lineTo(0, 60);
-    graphics.lineTo(0, 0);
-    graphics.closePath();
-    graphics.fillPath();
-
-    this.score = 0;
-    let scoreFormated = this.zeroPad(this.score, 6);
-    this.scoreLabel = this.add.bitmapText(
-      20,
-      20,
-      "pixelFont",
-      "SCORE " + scoreFormated,
-      32
-    );
-    this.usernameLabel = this.add.bitmapText(
-      740,
-      20,
-      "pixelFont",
-      gameSettings.username.toLocaleUpperCase(),
-      32
-    );
 
     this.accelerationSound = this.sound.add("accelerate");
     this.decelerationSound = this.sound.add("decelerate");
@@ -189,15 +126,31 @@ class mainScene extends Phaser.Scene {
     this.updateScore();
     this.toggleSound();
     this.toggleMusic();
-    this.moveCar(this.car1);
-    this.moveCar(this.car2);
-    this.moveCar(this.car3);
-    this.moveCar(this.car4);
+
+    // Calculate delay between spawning cars based on the calculated traffic difficulty
+    let timeDelay = 0;
+
+    if (gameSettings.difficulty === "Easy") {
+      timeDelay = 4000;
+    } else if (gameSettings.difficulty === "Medium") {
+      timeDelay = 3000;
+    } else if (gameSettings.difficulty === "Hard") {
+      timeDelay = 2000;
+    } else if (gameSettings.difficulty === "Ultra Hard") {
+      timeDelay = 1000;
+    }
+
+    this.time.delayedCall(timeDelay, () => {
+      this.moveCar(this.car1);
+      this.moveCar(this.car2);
+      this.moveCar(this.car3);
+      this.moveCar(this.car4);
+    });
   }
 
   seperateTraffic(car) {
     var randomTime = Phaser.Math.Between(1000, 2000);
-    this.time.delayedCall(randomTime, () => { }, [], this)
+    this.time.delayedCall(randomTime, () => {}, [], this);
     car.y = 0;
   }
 
@@ -221,7 +174,6 @@ class mainScene extends Phaser.Scene {
 
     // Create game over title
     this.createGameOverTitle();
-    this.checkHighScore();
 
     // Move the player's car off the screen to the bottom when crash occurs
     this.player.setVelocityX(0);
@@ -297,8 +249,8 @@ class mainScene extends Phaser.Scene {
 
   resetCarPos(car, speed) {
     car.y = 0;
-    var randomX = Phaser.Math.Between(0, 3);
-    var randomCar = Phaser.Math.Between(0, 48);
+    let randomX = Phaser.Math.Between(0, 3);
+    let randomCar = Phaser.Math.Between(0, 48);
 
     switch (randomCar) {
       case 0:
@@ -558,6 +510,39 @@ class mainScene extends Phaser.Scene {
     }
   }
 
+  createHUD() {
+    // add scoreboard and HUD at top of screen
+    // Code for Scoreboard from Ansimuz on YouTube:
+    // Getting started with Phaser 3 Tutorial
+    let graphics = this.add.graphics();
+    graphics.fillStyle(0x000000, 1);
+    graphics.beginPath();
+    graphics.moveTo(0, 0);
+    graphics.lineTo(config.width, 0);
+    graphics.lineTo(config.width, 60);
+    graphics.lineTo(0, 60);
+    graphics.lineTo(0, 0);
+    graphics.closePath();
+    graphics.fillPath();
+
+    this.score = 0;
+    let scoreFormated = this.zeroPad(this.score, 6);
+    this.scoreLabel = this.add.bitmapText(
+      20,
+      20,
+      "pixelFont",
+      "SCORE " + scoreFormated,
+      32
+    );
+    this.usernameLabel = this.add.bitmapText(
+      740,
+      20,
+      "pixelFont",
+      gameSettings.username.toLocaleUpperCase(),
+      32
+    );
+  }
+
   createGameOverTitle() {
     this.time.delayedCall(3000, () => {
       // create game over title
@@ -580,11 +565,5 @@ class mainScene extends Phaser.Scene {
         40
       );
     });
-  }
-
-  checkHighScore() {
-    if (this.score > gameSettings.highScore || !gameSettings.highScore) {
-      localStorage.setItem("highScore", this.score);
-    }
   }
 }
