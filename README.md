@@ -4,8 +4,11 @@ Nitro
 A project by:
 
 Jay Kroger @jaykroger
+<br>
 Robbie Ballou: @FriarobbyCollege
+<br>
 Landon Hunter: @Shnickelbob
+<br>
 Joel Mensah: @Joel7721
 
 
