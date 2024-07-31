@@ -1,6 +1,7 @@
 class mainScene extends Phaser.Scene {
   constructor() {
     super("mainScene");
+    this.timeDelay = 0;
   }
 
   preload() {
@@ -73,6 +74,41 @@ class mainScene extends Phaser.Scene {
     this.traffic.add(this.car3);
     this.traffic.add(this.car4);
 
+    // Calculate delay between spawning cars based on the calculated traffic difficulty
+
+    if (gameSettings.difficulty === "Easy") {
+      this.timeDelay = 4000;
+    } else if (gameSettings.difficulty === "Medium") {
+      this.timeDelay = 3000;
+    } else if (gameSettings.difficulty === "Hard") {
+      this.timeDelay = 2000;
+    } else if (gameSettings.difficulty === "Ultra Hard") {
+      this.timeDelay = 1000;
+    }
+    this.player.alpha = 0.5;
+    this.accumulateScore = false;
+    this.physics.world.removeCollider(this.player)
+    var tween = this.tweens.add({
+      targets: this.player,
+      y: config.height - 64,
+      ease: 'Power1',
+      duration: this.timeDelay - 100,
+      repeat: 0,
+      onComplete: function () {
+        this.accumulateScore = true;
+        this.physics.add.collider(
+          this.player,
+          this.traffic,
+          this.hurtPlayer,
+          null,
+          this
+        );
+        this.player.alpha = 1;
+      },
+      callbackScope: this
+    });
+
+
     this.physics.add.collider(
       this.player,
       this.traffic,
@@ -130,20 +166,8 @@ class mainScene extends Phaser.Scene {
     this.toggleSound();
     this.toggleMusic();
 
-    // Calculate delay between spawning cars based on the calculated traffic difficulty
-    let timeDelay = 0;
 
-    if (gameSettings.difficulty === "Easy") {
-      timeDelay = 4000;
-    } else if (gameSettings.difficulty === "Medium") {
-      timeDelay = 3000;
-    } else if (gameSettings.difficulty === "Hard") {
-      timeDelay = 2000;
-    } else if (gameSettings.difficulty === "Ultra Hard") {
-      timeDelay = 1000;
-    }
-
-    this.time.delayedCall(timeDelay, () => {
+    this.time.delayedCall(this.timeDelay, () => {
       this.moveCar(this.car1);
       this.moveCar(this.car2);
       this.moveCar(this.car3);
@@ -488,7 +512,7 @@ class mainScene extends Phaser.Scene {
   }
 
   updateScore() {
-    if (!this.gameOver) {
+    if (!this.gameOver && this.accumulateScore) {
       this.score += gameSettings.pointsIteration;
       let scoreFormatted = this.zeroPad(this.score, 6);
       this.scoreLabel.text = "SCORE " + scoreFormatted;
