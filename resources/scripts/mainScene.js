@@ -135,6 +135,13 @@ class mainScene extends Phaser.Scene {
     this.gameOver = false;
     this.crashed = false;
 
+    // Listen for the space bar key press to restart the game
+    this.input.keyboard.on('keydown-SPACE', () => {
+      if (this.gameOver) {
+        this.restartGame();
+      }
+    });
+
     // add scoreboard
     let graphics = this.add.graphics();
     graphics.fillStyle(0x000000, 1);
@@ -548,6 +555,14 @@ class mainScene extends Phaser.Scene {
     } else {
       this.music.setMute(false);
     }
+  }
+
+  // Restart the game by reloading the scene
+  restartGame() {
+    this.scene.restart();
+    this.score = 0;
+    this.crashed = false;
+    this.gameOver = false;
   }
 
   createGameOverTitle() {
