@@ -176,6 +176,7 @@ class mainScene extends Phaser.Scene {
 
     // Create game over title
     this.createGameOverTitle();
+    this.checkHighscore();
 
     // Move the player's car off the screen to the bottom when crash occurs
     this.player.setVelocityX(0);
@@ -567,5 +568,12 @@ class mainScene extends Phaser.Scene {
         40
       );
     });
+  }
+
+  checkHighscore() {
+    let highscore = localStorage.getItem("highscore");
+    if (this.score > highscore) {
+      localStorage.setItem("highscore", this.score);
+    }
   }
 }

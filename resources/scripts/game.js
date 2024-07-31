@@ -1,3 +1,5 @@
+const highscoreBox = document.getElementById("highscore");
+
 function getPlayerLocation(callback) {
   if (!navigator.geolocation) {
     console.log(
@@ -76,14 +78,31 @@ function setGameDifficulty(trafficData) {
   );
 }
 
+function setHighScore() {
+  if (!localStorage.getItem("highscore")) {
+    localStorage.setItem("highscore", 0);
+  } else {
+    let highscore = localStorage.getItem("highscore");
+    highscoreBox.textContent = `High Score: ${highscore.toString()}`;
+  }
+}
+
+function startGame() {
+  getPlayerLocation(setCoords);
+  setHighScore();
+
+  console.log("Starting game...");
+  const game = new Phaser.Game(config);
+}
+
 const gameSettings = {
   minSpeed: 10,
   maxSpeed: 25,
   difficulty: "",
-  pointsIteration: 1,
+  pointsIteration: 2,
   username: "RONALD",
   soundEnabled: false,
-  musicEnabled: true,
+  musicEnabled: false,
   musicConfig: {
     mute: false,
     volume: 0.5,
@@ -110,7 +129,4 @@ const config = {
 
 // MAIN
 
-getPlayerLocation(setCoords);
-
-console.log("Starting game...");
-const game = new Phaser.Game(config);
+startGame();
