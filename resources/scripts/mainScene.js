@@ -1,6 +1,7 @@
 class mainScene extends Phaser.Scene {
   constructor() {
     super("mainScene");
+    this.timeDelay = 0;
   }
 
   preload() {
@@ -29,6 +30,7 @@ class mainScene extends Phaser.Scene {
   }
 
   create() {
+    this.username = gameSettings.username;
     this.background = this.add.tileSprite(
       0,
       0,
@@ -71,6 +73,40 @@ class mainScene extends Phaser.Scene {
     this.traffic.add(this.car2);
     this.traffic.add(this.car3);
     this.traffic.add(this.car4);
+
+    // Calculate delay between spawning cars based on the calculated traffic difficulty
+
+    if (gameSettings.difficulty === "Easy") {
+      this.timeDelay = 4000;
+    } else if (gameSettings.difficulty === "Medium") {
+      this.timeDelay = 3000;
+    } else if (gameSettings.difficulty === "Hard") {
+      this.timeDelay = 2000;
+    } else if (gameSettings.difficulty === "Ultra Hard") {
+      this.timeDelay = 1000;
+    }
+    this.player.alpha = 0.5;
+    this.accumulateScore = false;
+    this.physics.world.removeCollider(this.player);
+    var tween = this.tweens.add({
+      targets: this.player,
+      y: config.height - 64,
+      ease: "Power1",
+      duration: this.timeDelay - 100,
+      repeat: 0,
+      onComplete: function () {
+        this.accumulateScore = true;
+        this.physics.add.collider(
+          this.player,
+          this.traffic,
+          this.hurtPlayer,
+          null,
+          this
+        );
+        this.player.alpha = 1;
+      },
+      callbackScope: this,
+    });
 
     this.physics.add.collider(
       this.player,
@@ -129,10 +165,12 @@ class mainScene extends Phaser.Scene {
     this.toggleSound();
     this.toggleMusic();
 
-    this.moveCar(this.car1);
-    this.moveCar(this.car3);
-    this.moveCar(this.car2);
-    this.moveCar(this.car4);
+    this.time.delayedCall(this.timeDelay, () => {
+      this.moveCar(this.car1);
+      this.moveCar(this.car2);
+      this.moveCar(this.car3);
+      this.moveCar(this.car4);
+    });
   }
 
   seperateTraffic(car) {
@@ -487,7 +525,7 @@ class mainScene extends Phaser.Scene {
   }
 
   updateScore() {
-    if (!this.gameOver) {
+    if (!this.gameOver && this.accumulateScore) {
       this.score += gameSettings.pointsIteration;
       let scoreFormatted = this.zeroPad(this.score, 6);
       this.scoreLabel.text = "SCORE " + scoreFormatted;
@@ -541,7 +579,7 @@ class mainScene extends Phaser.Scene {
       740,
       20,
       "pixelFont",
-      gameSettings.username.toLocaleUpperCase(),
+      this.username.toUpperCase(),
       32
     );
   }
