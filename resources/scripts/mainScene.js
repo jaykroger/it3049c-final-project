@@ -29,6 +29,7 @@ class mainScene extends Phaser.Scene {
   }
 
   create() {
+    const username = data.user;
     this.background = this.add.tileSprite(
       0,
       0,
@@ -152,7 +153,7 @@ class mainScene extends Phaser.Scene {
 
   seperateTraffic(car) {
     var randomTime = Phaser.Math.Between(1000, 2000);
-    this.time.delayedCall(randomTime, () => {}, [], this);
+    this.time.delayedCall(randomTime, () => { }, [], this);
     car.y = 0;
   }
 
@@ -541,7 +542,7 @@ class mainScene extends Phaser.Scene {
       740,
       20,
       "pixelFont",
-      gameSettings.username.toLocaleUpperCase(),
+      this.username,
       32
     );
   }
