@@ -5,7 +5,7 @@ class mainScene extends Phaser.Scene {
 
   preload() {
     // Load highway background
-    this.load.image("highway", "/resources/assets/images/highway.png");
+    this.load.image("highway", "resources/assets/images/highway.png");
 
     // Load in cars sprite atlas
     this.load.atlas(
