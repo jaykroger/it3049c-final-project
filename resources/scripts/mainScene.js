@@ -144,9 +144,15 @@ class mainScene extends Phaser.Scene {
     this.gameOver = false;
     this.crashed = false;
 
+
+
     this.accelerationSound = this.sound.add("accelerate");
     this.decelerationSound = this.sound.add("decelerate");
     this.crashSound = this.sound.add("carCrash");
+
+    //Restarts Game & Reset to Title
+    this.input.keyboard.on('keydown-R', this.restartGame, this);
+    this.input.keyboard.on('keydown-T', this.returnToTitle, this);
 
     // Source: F-Zero
     // Arrangement: Yasufumi Fukuda
@@ -156,6 +162,9 @@ class mainScene extends Phaser.Scene {
 
     this.music = this.sound.add("music");
     this.music.play(gameSettings.musicConfig);
+
+
+
   }
 
   update() {
@@ -175,7 +184,7 @@ class mainScene extends Phaser.Scene {
 
   seperateTraffic(car) {
     var randomTime = Phaser.Math.Between(1000, 2000);
-    this.time.delayedCall(randomTime, () => {}, [], this);
+    this.time.delayedCall(randomTime, () => { }, [], this);
     car.y = 0;
   }
 
@@ -612,6 +621,20 @@ class mainScene extends Phaser.Scene {
     let highscore = localStorage.getItem("highscore");
     if (this.score > highscore) {
       localStorage.setItem("highscore", this.score);
+    }
+  }
+
+  restartGame() {
+    if (this.gameOver) {
+      this.music.stop();
+      this.scene.restart();
+    }
+  }
+
+  returnToTitle() {
+    if (this.gameOver) {
+      this.music.stop();
+      this.scene.start('titleScene');
     }
   }
 }
