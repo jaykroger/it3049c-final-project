@@ -130,3 +130,5 @@ const config = {
 // MAIN
 
 startGame();
+
+

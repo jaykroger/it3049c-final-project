@@ -4,6 +4,7 @@ class titleScene extends Phaser.Scene {
     this.username = "";
     this.startBtn = document.getElementById("startButton");
     this.playerNameInput = document.getElementById("playerName");
+    this.buttonHints = document.getElementById("button-hints");
   }
 
   preload() {
@@ -323,6 +324,7 @@ class titleScene extends Phaser.Scene {
   startGame() {
     this.startBtn.style.display = "none";
     this.playerNameInput.style.display = "none";
+    this.buttonHints.style.display = "block";
     this.scene.start(
       "mainScene",
       { user: this.username },
